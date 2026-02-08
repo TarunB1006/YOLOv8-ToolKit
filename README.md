@@ -1,20 +1,190 @@
+<div align="center">
+
 # YOLOv8-ToolKit
-A repo where you can find codes for preprocessing data like splitting, combining multiple versions, and also training and streaming the predictions over a video(For YOLOv8).
 
-These are some other scripts used to ease the process of training and development but are not needed to run the framework.
+### *A Comprehensive Utility Suite for YOLOv8 Development*
 
-1. `extract_images.py`: Use this script to extract images from a video every *n* frames, which we can set based on the number of images required. In the script, set the path for your video, and set the skip frames based on the interval in which you wish to save the frames. In the given example, `frame_skip` is set to 25, and if the video is of 25 FPS, frames will be saved once every second.
+[![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/)
+[![YOLOv8](https://img.shields.io/badge/YOLOv8-Ultralytics-00FFFF.svg)](https://docs.ultralytics.com/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-2. `data_split.py`: A simple script to split the dataset into training, testing, and validation sets as per the format required by YOLOv8. Specify the images folder, labels folder, and also mention your test, train, and validation split ratio to get the split in the same folder as this `.py` file. **Note: The code assumes that the images are in `.jpg` format. If you have any other format, modify the same in Line 18.**
+*Streamline your YOLOv8 workflow with powerful preprocessing, training, and deployment tools*
 
-3. `data_combine.py`: This script can be used to combine datasets. Useful when there are multiple sets of data (maybe annotated by different people), and this can be used to easily combine them into a single bigger dataset.
+[Features](#-features) • [Documentation](#-documentation)
 
-4. `auto_annotate.py`: Manual annotation can be time-consuming; hence use this script to auto-annotate using an existing model to increase the size of your dataset. Once auto annotation is done, it can be manually verified. In the script, pass the model location and also pass the folder where the images are located. The location for labels also needs to be passed. Final annotations are in `.txt` format and can be viewed using any labeling software like *LabelImg*.
+</div>
 
-5. `stream.py`: This code lets us view the YOLO model in action on a live video. It shows us the predictions being made in real-time in the video. Specify the location of the video and model for the same.
+---
 
-6. `data.yaml`: This config file is used to specify parameters like the number of classes and the location of the dataset and will be required for training with YOLOv8. Refer to the [Documentation](https://docs.ultralytics.com/modes/train/) for more details.
+## 📋 Overview
 
-7. `training.ipynb`: This notebook has steps to train a model, with a few hyperparameters to start with. However, refer to the [Documentation](https://docs.ultralytics.com/modes/train/) to achieve the best results by changing these parameters according to your dataset size, quality, etc.
+YOLOv8-ToolKit is a collection of utility scripts designed to simplify the entire YOLOv8 development pipeline—from data preparation and annotation to model training and real-time inference. Whether you're preprocessing datasets or deploying models, this toolkit has you covered.
 
-8. `capture_coordinates.py`: This Python script allows you to manually capture coordinates from an image using mouse clicks and display them on the image. It's useful for defining regions of interest (ROIs) in an image by capturing sets of four points, typically to create rectangular regions.
+---
+
+## ✨ Features
+
+<table>
+<tr>
+<td width="50%">
+
+🖼️ **Data Preprocessing**
+- Extract frames from videos
+- Split datasets intelligently
+- Combine multiple datasets
+
+</td>
+<td width="50%">
+
+**AI-Powered Tools**
+- Auto-annotation with existing models
+- Real-time video streaming
+- Coordinate capture utility
+
+</td>
+</tr>
+</table>
+
+---
+
+## Quick Start
+
+```bash
+# Clone the repository
+git clone https://github.com/TarunB1006/YoloV8-ToolKit.git
+cd YoloV8-ToolKit
+
+# Install dependencies
+pip install ultralytics opencv-python
+```
+
+---
+
+## 🛠️ Tools
+
+### **Extract Images** → `extract_images.py`
+
+Extract frames from video at custom intervals for dataset creation.
+
+```python
+# Configuration
+video_path = "your_video.mp4"
+frame_skip = 25  # Save 1 frame per second (for 25 FPS video)
+```
+
+> **Use Case:** Build your dataset by extracting frames from videos at specified intervals.
+
+---
+
+### **Data Split** → `data_split.py`
+
+Split your dataset into training, validation, and testing sets according to YOLOv8 format.
+
+```
+📁 Dataset Structure
+├── train/
+│   ├── images/
+│   └── labels/
+├── val/
+│   ├── images/
+│   └── labels/
+└── test/
+    ├── images/
+    └── labels/
+```
+
+> **Note:** Default format is `.jpg`. Modify Line 18 for other formats.
+
+---
+
+### **Data Combine** → `data_combine.py`
+
+Merge multiple datasets into one unified dataset.
+
+```
+Dataset 1 + Dataset 2 + Dataset 3 → Combined Dataset
+```
+
+> **Use Case:** Combine datasets from multiple sources or annotators seamlessly.
+
+---
+
+### **Auto Annotate** → `auto_annotate.py`
+
+Automatically annotate images using a pre-trained YOLOv8 model.
+
+```python
+# Required inputs
+model_path = "your_model.pt"
+images_folder = "path/to/images"
+labels_folder = "path/to/labels"
+```
+
+> **Tip:** Verify auto-annotations manually using tools like [LabelImg](https://github.com/tzutalin/labelImg) for best results.
+
+---
+
+### **Stream Predictions** → `stream.py`
+
+Visualize YOLOv8 predictions in real-time on video files.
+
+```python
+# Run live inference
+python stream.py
+```
+
+> **Perfect for:** Testing model performance on real-world videos.
+
+---
+
+### **Configuration File** → `data.yaml`
+
+Define training parameters for YOLOv8.
+
+```yaml
+# Example data.yaml
+path: /path/to/dataset
+train: train/images
+val: val/images
+nc: 3  # number of classes
+names: ['class1', 'class2', 'class3']
+```
+
+📖 [YAML Configuration Guide](https://docs.ultralytics.com/modes/train/)
+
+---
+
+### **Training Notebook** → `training.ipynb`
+
+Jupyter notebook with pre-configured hyperparameters to kickstart your training.
+
+```python
+# Basic training command
+from ultralytics import YOLO
+model = YOLO('yolov8n.pt')
+model.train(data='data.yaml', epochs=100, imgsz=640)
+```
+
+📖 [Training Documentation](https://docs.ultralytics.com/modes/train/)
+
+---
+
+### **Capture Coordinates** → `capture_coordinates.py`
+
+Interactive tool to capture coordinates from images using mouse clicks.
+
+```
+Click → Capture Points → Define ROI
+```
+
+> **Use Case:** Define regions of interest (ROI) for focused detection zones.
+
+---
+
+## 📖 Documentation
+
+| Resource | Link |
+|----------|------|
+| YOLOv8 Official Docs | [docs.ultralytics.com](https://docs.ultralytics.com/) |
+| Training Guide | [Training Mode](https://docs.ultralytics.com/modes/train/) |
+| Prediction Guide | [Predict Mode](https://docs.ultralytics.com/modes/predict/) |
